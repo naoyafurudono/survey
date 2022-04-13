@@ -1,17 +1,30 @@
-Title  : リアクティブプログラミングのサーベイ
+Title      : リアクティブプログラミングのサーベイ
+Title Note : (last update: &updated;)
+updated: 2022-04-14T00:50
 
 [INCLUDE=preamble]
 
 [TITLE]
 
-# 論文リスト
+[TOC]
+
+# 文献リスト
 
 - [A Survey on Reactive Programming](https://dl.acm.org/doi/abs/10.1145/2501654.2501666?casa_token=6O18dg3f5d0AAAAA:wdgWP6esK0K6OCtSZ1CpHOW4mNguMywPQAt2j3SW7zo58k351VdCTAQrhJ1mUm3JDnVipLtM86Y_C_Q)
   - サーベイ論文 (2013)
   - 軽く読んだ
 -  [The Art of the Meta Stream Protocol: Torrents of Streams](https://programming-journal.org/2022/6/2/)
   - RPの拡張性の乏しさにフォーカスした論文 (2020)
-  - じっくり読みかけ
+  - ざっくり読んだ
+- [Streams a la carte: Extensible Pipelines with Object Algebras](https://drops.dagstuhl.de/opus/volltexte/2015/5239/)
+  - Streaming library の拡張性のなさに嘆いて object algebra を用いてなんとかする論文 (2015)
+  - 上の論文で関連研究として紹介されていた論文
+
+文献ではないけど、関連していそうな言語。
+
+- Elm言語 : インタラクティブなWebアプリを作るときに便利。関数型でフロントエンドをかける。Haskellに影響されていて、処理系が特殊。JSがコンパイルターゲット
+- Elixir言語 : 並列化が得意。たくさんプロセス（OSのプロセスではなく、もっと軽量な独自の実行単位）を作る。アクターみたいな感じ。関数型だけど型はそこそこ。Juliaくらいの型付けな印象。シンタックスともう少し深いところまでRubyに啓発されてそう。Erlangを書きやすくしたものだとか。
+  - 上であげた二つ目の論文ではElixirにEDSLを定義する
 
 ## A Survey on Reactive Programming
 
@@ -24,6 +37,16 @@ Title  : リアクティブプログラミングのサーベイ
 関数型が良さそうだということと、分散したときのcoherencyが難しいということがわかる。
 LINQとかElmとかには触れていなくて、論文になってないものは調査対象にしなかったのかしらという感じ。
 ちょっと古いのがネック。
+
+## The Art of the Meta Stream Protocol: Torrents of Streams
+
+課題として、既存のRP言語/フレームワークはnon-functionalな記述をうまくできないとか統一的な命令がないことを挙げている。Functionalな記述として`map`とか`filter`みたいなものをあげていて、non-functionalな記述としてpush/pull評価戦略やバッファの設定とかをあげていた気がする。
+
+この論文ではCreekというElixirのEDSLを定義してそのコンパイル/評価の環境も与える。
+メタプログラミングでプログラマが定義したDAG(mapとかfilterの合成で作られたやつ)を編集できる。割とガッツリメタプログラミング。
+使う技術は[structural intercession](https://dl.acm.org/doi/10.1145/1028976.1029004)だとか。説明なしに話が進む。件の論文をあたっていないのでもやもや。
+残念なことにstructural intercessionとかメタプログラミングを採用した動機は書かれていない。
+こういうAST操作を提供すると書かれているだけ。
 
 # 疑問、アイデア
 
