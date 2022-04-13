@@ -6,3 +6,5 @@
 ## 更新
 
 - 2022-04-12: init
+- 2022-04-13: 昔調べたblame shiftingの資料を追加
+- 2022-04-13: Reactive programming について調べ中
