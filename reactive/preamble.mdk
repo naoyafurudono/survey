@@ -1,0 +1,107 @@
+Author      : Naoya Furudono
+Author Note : 21M30353
+Email       : furudono.n.aa@m.titech.ac.jp
+
+Package: [margin=20truemm]geometry
+
+<!-- hide section numbers -->
+Heading Depth : 0
+
+[INCLUDE=style/ltjsarticle]
+[INCLUDE=style/koka-style]
+[INCLUDE=style/paper-style]
+
+@submit .todo-style {
+  display:none;
+  xdisplay: block;
+}
+
+naoya {
+  .todo-style;
+  before: "**Naoya**. ";
+  border-left: 3pt solid green;
+}
+
+smallnegskip       : []{display: block; margin-bottom: -0.5em }
+mednegskip         : []{display: block; margin-bottom: -1em }
+bignegskip         : []{display: block; margin-bottom: -2em }
+
+Bibliography: furudono2021.bib
+Math Dpi    : 300
+Math Concurrency: 8
+
+<!--
+Tex Doc Header*:
+    %\addtolength{\textheight}{5pt}
+    %\linespread{0.98}
+    \setlength\textfloatsep{0.25\textfloatsep}
+    %\setlength{\textfloatsep}{5pt plus 1.0pt minus 2.0pt}
+    \renewcommand{\floatpagefraction}{.8}%
+    \setlength\mdpreskip{\abovedisplayskip}
+    \makeatletter
+    \renewcommand\section{\@startsection{section}{1}{\z@}%
+                       {-8\p@ \@plus -2\p@ \@minus -2\p@}%
+                       {6\p@ \@plus 1\p@ \@minus 1\p@}%
+                       {\normalfont\large\bfseries\boldmath
+                        \rightskip=\z@ \@plus 8em\pretolerance=10000 }}
+    \renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+                          {-8\p@ \@plus -2\p@ \@minus -2\p@}%
+                          {4\p@ \@plus 1\p@ \@minus 1\p@}%
+                          {\normalfont\normalsize\bfseries\boldmath
+                            \rightskip=\z@ \@plus 8em\pretolerance=10000 }}
+    \renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
+                          {-8\p@ \@plus -2\p@ \@minus -2\p@}%
+                          {-0.5em \@plus -0.22em \@minus -0.1em}%
+                          {\normalfont\normalsize\bfseries\boldmath}}
+    \renewcommand\paragraph{\@startsection{paragraph}{2}{\z@}%
+                          {-6\p@ \@plus -2\p@ \@minus -2\p@}%
+                          {-0.5em \@plus -0.22em \@minus -0.1em}%
+                          {\normalfont\normalsize\itshape}}
+    \makeatother
+-->
+
+~ MathDefs
+\setlength{\fboxsep}{0.1ex}
+%\definecolor{light-gray}{gray}{0.85}
+\newcommand{\gray}[1]{\colorbox{gainsboro}{$#1$}}
+\definecolor{sidecolor}{HTML}{788ca2}
+%\newcommand{\fullwidth}[1]{\cspan{#1}{\hspace*{\dimexpr\linewidth - 1ex\relax}\vrule height0\baselineskip depth 0\baselineskip width 0\baselineskip}}
+\newcommand{\side}[1]{{\color{sidecolor}{#1}}}
+
+\newcommand\tr[1]{\lceil#1\rceil}
+\newcommand{\trl}[1]{\tr{#1}^{l}}
+\newcommand{\trm}[1]{\tr{#1}^{m}}
+\newcommand\tru[1]{\lfloor#1\rfloor}
+\newcommand\trmon[1]{\lfloor{#1}\rfloor}
+\newcommand\trx[1]{\lceil\!\!\lceil#1\rceil\!\!\rceil}
+
+\newcommand\ctx[1]{\lceil#1\rceil}
+\newcommand\ev[1]{\overline{#1}}
+\newcommand\evdecl[1]{\underline{#1}}
+\newcommand\evt[1]{\llbracket #1 \rrbracket}%
+
+\newcommand\under[2]{\underset{\raisebox{2mm}{$\scriptstyle #2$}}{#1}}
+%\newcommand\inhx[2]{\under{#1}{\uparrow   \makebox[0pt]{\raisebox{-0.6ex}{$\scriptstyle\kern 1.3ex #2$}}}}
+\newcommand\inhx[2]{\under{#1}{\under{\uparrow}{#2}}}
+%\newcommand\synx[2]{\under{#1}{\downarrow \makebox[0pt]{\raisebox{-0.6ex}{$\scriptstyle\kern 2ex #2$}}}}
+\newcommand\synx[2]{\under{#1}{\under{\downarrow}{#2}}}
+\newcommand\inh[1]{\under{#1}{\uparrow}}
+\newcommand\syn[1]{\under{#1}{\downarrow}}
+\newcommand\append[2]{\evec{#1\midbar #2}} %{#1}{+}\!\!{+}{#2}}
+\newcommand\appendop{\mathbin{{+}\!\!{+}}}
+\newcommand{\restrict}[1]{\upharpoonright{#1}}
+
+\newcommand\eraset[1]{#1^{*}} % how to erase types?
+\newcommand\erasetp[1]{(#1)^{*}}
+\newcommand\res{\mathid{restricted}}
+
+\newcommand{\hole}{{\scriptstyle\square}}
+
+\newcommand{\cspan}[2]{\multicolumn{#1}{l}{#2}}
+
+\newcommand{\downstrut}{\vrule height 0ex depth 1.5ex width 0pt\relax}
+
+\newcommand{\Fpwo}{F_{pwo}}
+\newcommand{\lpw}{\lambda_{pw}}
+\newcommand{\prefix}{\leqslant} % {\scriptstyle\sqsubseteq}\,}
+~
