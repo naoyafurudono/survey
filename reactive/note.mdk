@@ -1,6 +1,6 @@
 Title      : リアクティブプログラミングのサーベイ
 Title Note : (last update: &updated;)
-updated: 2022-04-14T19:03
+updated: 2022-04-14T20:51
 
 [INCLUDE=preamble]
 
@@ -64,6 +64,30 @@ Object algebra という概念を（抽象化技法）を使っている。こ�
 
 言語に対する要求が高くて、type operator多相を要求する。つまり`list<int>`とか`array<int>`とかを抽象化できる多相性。
 Kokaにはなかった気がする。入れるためにはカインド制約をいい感じにするのが大変そうだろうか？
+
+Functional なことをJava8でやっていて読むのが大変。メモ:
+
+```
+Push<T>     ~ { invoke: Consumer<T> -> () }
+Consumer<T> ~ { accept: T -> () }
+```
+
+`Consumer`は`Push`の継続だと思って良いとか。ちなみに、`Push`はpush semanticsなストリームを表す型パラメータ（ジェネリックなクラス）で
+invokeに継続を渡して呼び出すことでstreamを流す（継続を再開する）。`map`の実装はそんな再開をλで包んで、パラメータの関数をframeとして差し込むようなもの。最適化しようと思うとdefunctionalizationとかが効く？
+
+~ yak
+Defunctionalizationと書いたけど、あまり理解していなかったので調べた (and メモ)。
+
+- 月曜日の<Programming>での講演でCPS -> _defunctionalization_ with associativity みたいな話があった。
+- [Defunctionalization: Everybody Does It, Nobody Talks About It](https://blog.sigplan.org/2019/12/30/defunctionalization-everybody-does-it-nobody-talks-about-it/)
+  - SIGPLAN のブログ記事。良い。
+~
+
+Figure 3の`map`実装を頑張って読んだのでメモ。Javaのイテレータのやり方に従っていると論文では書かれていた（けど僕はそれを知らない）。
+返す`Pull<R>`は三つのメンバを持つオブジェクトで、このmapが出力する次の値`next : R`と`hasNext : () -> bool`、そして`next : () -> R`。
+`next()`を呼ぶ前には必ず`hasNext()`を呼ぶように設計されている。例えば二回連続で`next()`を呼ぶのは間違った使い方。`hasNext`を呼ぶと、`map`元の`Pull<T>`ストリームから次の要素を取得して`this.next`に保存する。そして`next()`を呼ぶと`this.next`を結果として返しつつ、`this.next = null`する。ちなみに`next()`を呼んだ際に`this.next`が`null`だと例外を投げるので二回続けて`next()`を呼ぶと例外が生じる。
+
+
 
 ## Topology-level Reactivity in Distributed Reactive Programs: Reactive Acquaintance Management using Proximity Sets
 
