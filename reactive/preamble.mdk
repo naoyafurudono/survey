@@ -3,7 +3,7 @@ Author      : 古殿直也
 Package: [margin=20truemm]geometry
 
 <!-- hide section numbers -->
-Heading Depth : 0
+<!-- Heading Depth : 0 -->
 
 Logo          : True
 
