@@ -1,6 +1,6 @@
 Title      : リアクティブプログラミングのサーベイ
 Title Note : (last update: &updated;)
-updated: 2022-04-14T18:53
+updated: 2022-04-14T18:59
 
 [INCLUDE=preamble]
 
@@ -52,7 +52,7 @@ LINQとかElmとかには触れていなくて、論文になってないもの�
 残念なことにstructural intercessionとかメタプログラミングを採用した動機は書かれていない。
 こういうAST操作を提供すると書かれているだけ。
 
-## Streams a la carte: Extensible Pipelines with Object Algebras { #paper:obj-alg }
+## Streams a la carte: Extensible Pipelines with Object Algebras
 
 push/pull semanticsなどの性質をフレームワークの定義から分離する（ハードコーディングを避ける）話。
 もともとpush/pullを選べるようにすることが動機だったみたいで、そこから目的を一般化したとのこと（c.f., Section 3.1）。
@@ -62,6 +62,8 @@ Object algebra という概念を（抽象化技法）を使っている。こ�
 Kokaにはなかった気がする。入れるためにはカインド制約をいい感じにするのが大変そうだろうか？
 
 ## Topology-level Reactivity in Distributed Reactive Programs: Reactive Acquaintance Management using Proximity Sets
+
+発表を聞いたときのメモ:
 
 - FRPとreactive streamで大まかに分類できる
 - open networkに対して分散rpをできるようにしたい。難しさ:
@@ -81,6 +83,8 @@ FRP v.s. reactive streamの捉え方はなるほどと感じた。
 ~
 
 # 疑問、アイデア
+
+だいぶ思いつきで書いていて、主張はまとまっていない。無意味なアイデアかもしれないし、既存の研究があるかもしれない。
 
 ## 代数的エフェクトでRPの機能を隠蔽/パラメタライズ
 
