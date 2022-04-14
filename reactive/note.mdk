@@ -1,12 +1,16 @@
 Title      : リアクティブプログラミングのサーベイ
 Title Note : (last update: &updated;)
-updated: 2022-04-14T18:59
+updated: 2022-04-14T19:03
 
 [INCLUDE=preamble]
 
 [TITLE]
 
 <!-- [TOC] -->
+
+~ abstract
+特に分散実行や意味論の分離（push/pullをライブラリにハードコードする必要性はないなど）が気になる。 具体的な調査メモはnote.mdkに。密かに代数的エフェクトと絡められないかと、淡く期待している。
+~
 
 # 文献リスト
 
