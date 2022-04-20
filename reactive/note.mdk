@@ -1,6 +1,6 @@
 Title      : リアクティブプログラミングのサーベイ
 Title Note : (last update: &updated;)
-updated: 2022-04-14T20:51
+updated: 2022-04-21T00:47
 
 [INCLUDE=preamble]
 
@@ -17,6 +17,7 @@ updated: 2022-04-14T20:51
 - [A Survey on Reactive Programming](https://dl.acm.org/doi/abs/10.1145/2501654.2501666?casa_token=6O18dg3f5d0AAAAA:wdgWP6esK0K6OCtSZ1CpHOW4mNguMywPQAt2j3SW7zo58k351VdCTAQrhJ1mUm3JDnVipLtM86Y_C_Q)
   - サーベイ論文 (2013)
   - 軽く読んだ
+  - サーベイの対象が均等ではない感じがして、アカデミアによっている？
 -  [The Art of the Meta Stream Protocol: Torrents of Streams](https://programming-journal.org/2022/6/2/)
   - RPの拡張性の乏しさにフォーカスした論文 (2020)
   - ざっくり読んだ
@@ -27,6 +28,31 @@ updated: 2022-04-14T20:51
   - ネットワークでRP
   - タイトルの通り、処理への参加/不参加がダイナミックなことが課題で、それについてreactiveにすること（topology levelでreactive）が目的
   。
+- [The Essence of FRP](https://begriffs.com/posts/2015-07-22-essence-of-frp.html)
+  : FRP はオリジナルの意味を失ってしまった、という発表。
+  元々（20年くらい前）は定義があったのだけれど、いろんな意味で使われるようになって、今やFRPと呼ばれるものは元々の定義を大体満たさなくなった。
+  連続的な（離散的でない）時間を扱い、その意味は純粋に決まっていた。なので並列実行しても決定的だったとか。
+  観測（近似）はFRPプログラムの末端にあって、時間に直接支配される部分は別に書かれる。遅延評価な言語で書くとそういう分離がスッキリ書ける。
+- [What is (functional) reactive programming? (stack overflow)](https://stackoverflow.com/questions/1028250/what-is-functional-reactive-programming/1030631#1030631)
+  : FRPは何かという問いとそれに対する回答。上の公演をした人が回答している。真偽の程は僕にはわからないけど、論調はそれらしいのでとりあえず僕は信じている。要約がいらない文章なのでここには内容を書かない。(メモ: behavior, values over timeが第一級)
+- [Push-Pull Functional Reactive Programming](http://conal.net/papers/push-pull-frp/)
+  : 
+- [FRP: Haskell wiki](https://wiki.haskell.org/Functional_Reactive_Programming#History)
+  : 短くて良い。
+    97年のICFP論文でoriginal formulationが与えられたとか。
+    実装の話はしなくて、便利な面の表層だけをさらった感じ。
+    Diffの対象がRPではなく、コールバックとかを使う実装。いわゆるRPとは? という気持ちになる。
+- [Reactive Programming (wikipedia)](https://en.wikipedia.org/wiki/Reactive_programming)
+  : 英語ページがなかなか良さげに書かれている。
+  余談だが、pdf出力機能がいい。デフォルトで印刷に適した余白がつく。論文もこのくらいにして欲しい。
+- [入門: Kubernetes]()
+  : まずはここが大事か。Kubernetesで何ができて何ができないか。
+- [Developing reactive Microservices with Quarkus](https://ibm.github.io/workshop-quarkus-openshift-reactive-messaging/images/ReactiveMicroservices.pdf)
+  : Quarkus という Kubernetes みたいな container management platform でRPもできるJavaライブラリの紹介。RPはメインではないけど一つの大きな応用例として。
+  Graal/VMコンパイラでJavaコードをネイティブコンパイルしてしまうらしい。コンパイル時に頑張ることで、起動時間を縮めたのだとか。
+- [WebAssembly meets Kubernetes with Krustlet](https://cloudblogs.microsoft.com/opensource/2020/04/07/announcing-krustlet-kubernetes-rust-kubelet-webassembly-wasm/)
+  : WASM をKubernetesでDockerを介さずに実行するプロジェクト(Krustlet) の紹介記事。開発者が書いていそう。
+  別にDockerのコンテナを使うスタイルを駆逐するわけではなく、選択肢を増やす感じだとか。K8sPod(ノード)としてOS環境を使いたいか、WASMバイナリを使いたいかによって選択する。利点欠点はそれぞれあるけど、WASMの方が小粒？(そうとも限らないかも)
 
 文献ではないけど、関連していそうな言語。
 
@@ -45,6 +71,11 @@ updated: 2022-04-14T20:51
 関数型が良さそうだということと、分散したときのcoherencyが難しいということがわかる。
 LINQとかElmとかには触れていなくて、論文になってないものは調査対象にしなかったのかしらという感じ。
 ちょっと古いのがネック。
+
+### 疑問
+
+RPはなかなか双方向性をサポートできていないと言って、future work的なものとしてあげていたが、それは制約プログラミングと何が異なるのか。制約プログラミングがすでに存在する中で、RPにどのような方向への発展が期待されているのか。
+rule based な言語があるとか（ampersand-- relational algebra based）。
 
 ## The Art of the Meta Stream Protocol: Torrents of Streams
 
@@ -84,6 +115,7 @@ Defunctionalizationと書いたけど、あまり理解していなかったの�
 ~
 
 Figure 3の`map`実装を頑張って読んだのでメモ。Javaのイテレータのやり方に従っていると論文では書かれていた（けど僕はそれを知らない）。
+(自然言語で説明されていた、僕がそれを理解できなかっただけ)。
 返す`Pull<R>`は三つのメンバを持つオブジェクトで、このmapが出力する次の値`next : R`と`hasNext : () -> bool`、そして`next : () -> R`。
 `next()`を呼ぶ前には必ず`hasNext()`を呼ぶように設計されている。例えば二回連続で`next()`を呼ぶのは間違った使い方。`hasNext`を呼ぶと、`map`元の`Pull<T>`ストリームから次の要素を取得して`this.next`に保存する。そして`next()`を呼ぶと`this.next`を結果として返しつつ、`this.next = null`する。ちなみに`next()`を呼んだ際に`this.next`が`null`だと例外を投げるので二回続けて`next()`を呼ぶと例外が生じる。
 
@@ -156,3 +188,42 @@ RPライブラリ提供者はインターフェースを守った実装を与え
 通信の方法と内部処理は分離されて、ノードではコントローラがそれらをつなぎ合わせるような設計はどうだろうか。
 そうすると、内部処理は参照等価な関数みたいなものだと思えて
 
+Kubernetesみたいな技術があって、機能が競合するのかなと思う。
+Dockerと組み合わせて使うのが流行っているみたい（マイクロサービスアーキテクチャ）。
+分散RPみたいに言語の機能でなんとかする流派とKubernetesみたいな技術で言語の外でなんとかする流派の違いなのかなと想像する。
+まず、この想像は正しいのか、reifyするとどう言えるかを知りたい。
+棲み分けがされているならそれを知りたいし、されていないならどうできそうか考えるのは考えるのは楽しそう。
+完成度の違いも気になる。
+
+棲み分けはやはりありそうで、式とかのレベルでノードを設定したいのか、アプリケーションのレベルでノードを作りたいのかによって使い分けることになりそう。
+リアクティブプログラミングは非同期なプログラムを綺麗に書くために使えるのに対して、Kubernetesはリソースを分散させるのに使える（役に立つ、適している？）。
+分散性はKubernetesの方が得意そう、というかRP界隈では何を問題にするべきか捉えきれていないor言語や使う文脈依存で方向性が定まらない感じがする。
+面白そうではあるが。
+
+(ある程度調べた)
+
+多分上の観察はそんなに間違ってなくて、`Kubernetes reactiveっぽい言葉`で検索すると、それらしい記事がたくさん出てくる。
+それらで機能の使い分けがどうなされているかをこれから調べたい。
+
+## いろんな分散実行とRP
+
+多分、分散実行にも色々あってそれぞれRPとの相性とか、適切な抽象化とかが異なるのだろう。
+リアクティブな分散アプリケーションにはどんなものがあって、開発とか実行とかのタイミングでどんな性質が求められる/求められないか。
+それらの要求はどんな技術(言語とかフレームワークとか)で解決されるのが綺麗か。
+
+## なぜRPか
+
+Reactive applicationを人類は欲していて、それを実装する方法は色々ある。RPはそのための一つの手段に過ぎない。ではいつRPが有効か？
+
+具体的に何がRP以外の手段として存在するかは具体的にどんなアプリケーションをリアクティブだと思うかによる気がするけど、例えばKanonはリアクティブなアプリだと僕は思っていて、その実装はみなさんご存知の通り（少なくとも僕から説明することはない）。
+Kanonの実装にRPLを使ったら楽できるだろうか、は気になる。高橋くんがincremental computationを気にしていたのはこのあたりの話だろうと思う。
+いかがか？ 
+
+- RPはincremental computationをするものだと思える（はず）
+- 何か議論の末、Kanonには適さないことが分かったらしい。
+- どうして適さないのか？
+
+あるいは、Elixirみたいな言語でKanonとか実装したら気持ち良いだろうか。(これは気持ち良いかも)
+これを検証するための知識を今の僕は提供できないけど。
+
+Kanonの話に限らずRPをいつ使うかみたいな判断が欲しい。
