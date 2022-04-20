@@ -1,6 +1,6 @@
 Title      : リアクティブプログラミングのサーベイ
 Title Note : (last update: &updated;)
-updated: 2022-04-21T00:47
+updated: 2022-04-21T02:21
 
 [INCLUDE=preamble]
 
@@ -10,6 +10,22 @@ updated: 2022-04-21T00:47
 
 ~ abstract
 特に分散実行や意味論の分離（push/pullをライブラリにハードコードする必要性はないなど）が気になる。 具体的な調査メモはnote.mdkに。密かに代数的エフェクトと絡められないかと、淡く期待している。
+
+リアクティブプログラミング自体に興味があったわけではないことに気がついた（手法の一つとして関心はあるが）。
+
+おそらく肝は、分散でリアクティブなこと。
+分散なだけではそんなに気にならなくて、GPGPUを用いた構成の科学技術計算やdynasorみたいな技術にはそこまで関心を持たなかった。
+別に高速化したいわけではない。多分ネットワークを介するような分散に興味がある。
+分散というよりリモート？
+
+リアクティブなことには分散抜きにしても割と興味があると思う。
+ただ、RP単体にはそこまでで、一般化すると面白そうと思うだけ。
+RPを見ていると、「そういうアプリがあっても面白いかも」と思うし、
+実現方法は知りたいと思う。（スプレッドシートの実装は気になる）
+でもその程度で、覗いてみたいけど入ってみたいとは思わないというか、理解してもそれ以上のものを見つけられる気がしなささそうに感じる。
+より一般に、リアクティブな振る舞いをどのように実現するか、どのように記述させるかには興味がある。その一つとしてRPに興味があった。
+
+分散とリアクティブの共存は多分難しさが色々あって、RPに限らず色々な研究がされている。
 ~
 
 # 文献リスト
@@ -227,3 +243,81 @@ Kanonの実装にRPLを使ったら楽できるだろうか、は気になる。
 これを検証するための知識を今の僕は提供できないけど。
 
 Kanonの話に限らずRPをいつ使うかみたいな判断が欲しい。
+
+# まとめ、分類
+
+横断的に（気の向くままに）reactive programming 関連の話題を漁ってきた。
+ここでは見てきたコンテンツにストーリーを与えて、セミナーで話しやすくする。
+
+それぞれのトピックはわりかし独立しているように思う。
+
+
+## general prepuce RP
+
+まずは有名どころから。
+
+### FunctionalなRPライブラリ
+
+産業界で市民権を得ているのはこれら？
+
+- ReactiveX
+  - functional なインターフェース (Observable) を提供する
+  <!-- - Pull ベースな意味 -->
+  - 色々なOOPLで実装されていて、実装言語ごとに用途が異なっていいとか、実際に異なるとか。
+  - 意味的には割とスタンダードか
+- Akka, REScala, Quarkus, LINQなどの機能は割とこのあたりか。
+  - もちろんそれぞれ個性があって、包含関係はないはず
+
+意味論の議論は枯れている？
+
+### RP language
+
+Elm はWeb開発のため。React に影響を与えるなど (Reactのことはよく知らない）。
+
+- Elm (for WEB app)
+- Elixir (IDK about it)
+
+## original FRP
+
+- FRP is not just a functional RP
+  - 今やこの発言は過激派に見える
+  - 時間（実数でモデルされる時間）を引数に取る関数としての、reactive valueを上手に扱えるのが売り。
+  - 詳しくは知らない。Haskell。
+- 蓮尾先生の講演で実数が絡んだCPSに関する検証の話を聞いた気がする。何かを完備化すると上手く検証できたとかなんとか？
+
+## (meta) reactive programming framework
+
+context: RP as stream processing with map, filter, and so on.
+suggest: parameterize the framework so that cleanly switch the behavior of framework
+
+- object algebra
+  - こんな記述がRXJavaに: non-opinionated about the source of concurrency (threads, pools, event loops, fibers, actors, etc.)
+- meta-stream なんとか (programming)
+- might be possible: algebraic effects and handlers
+  - 簡単ではないと思うけど、なんとかなる気はする。継続やストリームの表現を上手に扱う必要がきっとあって、もしかしたら気持ちの良い実装や理論的な議論をできるかもしれない。
+
+## RP by actor
+
+Actorモデル（なんなのかをよく理解していない）はRPを実現するために便利なようで、色々な研究がこれにのっかている。
+分散性が絡む話に多い気がする。Actorが何か、どうしてactorかは今後の課題or誰か教えてくれないだろうか。
+
+- <Programming2022> のtopology level reactive の研究ではElixirにのっかていた。DSLを定義して、それをElixirだったかErlangだったかにコンパイルすると言っていた気がするのだけど、そのDSLの登場人物にactor（とreactor）がいた。
+- 渡辺卓雄先生もactorを使ってRP言語を研究されている（いた？）。
+- Elixir, Erlang
+  - 組み込みに向いているとか
+
+鍵は分散と組み込み？つまりCPS？
+
+## Reactive architecture
+
+上のactorの話はKubernetesとの棲み分けが気になる。
+つまり、言語レベルでのサポートではなくコンテナマネージではではいけないか？
+どう棲み分けるか。
+
+Kubernetes はコンテナをいい感じにスケールしてくれるソフトウェアで、宣言的な設定を書いてコンテナを渡して実行すると
+コンテナの起動とかをいい感じにやってくれるらしい。理解がとてもとても浅いので勉強が必要。
+Kubernetesをラズパイにインストールして上手に実行する、みたいな話もあるようで、ネットワークの状況に応じて、
+K8sが上手に仕事するみたいなことをオライリー本で読んだ。似たような話をtop-level-reactiveで見た気がする。
+違いを明確に理解したい。
+
+ちなみにK8sでコンテナではなくWASMを実行する動きがある。これが入ると議論は変わるだろうか。
