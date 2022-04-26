@@ -1,6 +1,6 @@
 Author      : 古殿直也
 
-Package: [margin=1truemm]geometry
+Package: [margin=20truemm]geometry
 
 <!-- hide section numbers -->
 Heading Depth : 0
