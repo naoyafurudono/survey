@@ -1,0 +1,124 @@
+Title      : Effectの埋め込み
+Title Note : (last update: &updated;)
+updated: 2022-04-26T20:38
+
+[INCLUDE=preamble]
+
+[TITLE]
+
+# TL;DR;
+
+複数のエフェクトをひとまとめにして、ハンドラネストの順序問題を解決したい、という動機に対する解決策を提案する。
+以下のように&Fpw;を拡張する。
+
+~ mathpre
+h ::= \{ l:h; ...; clause;... \}
+clause ::= op --> f
+~
+
+Dynamic semanticsを次のようにする。まずreduction ruleは変えない。
+
+~ mathpre
+handler h f --> prompt m h ( f () )
+~
+
+次のevvの拡張で$m$と$w$をシェアするのがミソ。
+
+~ infer
+<< l1: (m, h1, w),..., l_n: (m, h_n, w) | w >> |- E     h1, ..., h_n === decompose(h)
+-------------------------------------------
+w |- prompt m h E
+~
+
+マーカを「複数のハンドラ」で共有することがミソ。
+
+# 長い説明
+
+複数のエフェクトをひとまとめにしたい欲求があるとのこと。
+この例はそのモチベーションを示すわけではないけど、こういうふうに`runtime`エフェクトを定義した上で、実行時の振る舞いも素直な感じになって欲しいという願いだと思う。
+
+```kokax
+effect io {
+  >> : \forall a. () -> a
+  << : \forall a. a  -> ()
+}
+
+effect err {
+  panic : \forall a. string -> a
+}
+
+effect runtime {
+  io                 // embedding
+  err                // embedding
+  log : string -> () // additional operation/observation/projection
+}
+```
+
+プログラマには書いた通りに見せる。つまり上の構文で大きなエフェクトラベルを定義して、これを実装するハンドラの元ではioやerrエフェクトを要求する関数を呼べるし、logオペレーションも呼べる。runtimeエフェクトとioエフェクトの両方が関数本体で起きるときに、その関数のエフェクトは<io, runtime>ではなくて<runtime>になる。ここの仕組みは考えないけど、多分Kokaには似たような仕組みが既にある(pureがruntimeに大体対応していた気がする)。
+
+一方内部では:
+型レベル: 三つのラベルを持つようにする。Kokaなら順序を入れ替えれるのでok。入れ替えられないような定義はそもそも受け入れるべきではない（i.e., 埋め込みを展開したときにopの名前に重複があってはならない）。
+三つのラベルを持つことで、例えばioエフェクトを自然に呼べるようになる。もし新しい大きなエフェクトラベルを導入するとサブタイピングみたいなことをラベル間ですることになる。そのための型システムへの変更は凄まじそう。
+
+項レベル: 議論が必要。ハンドラを雑にネストするとその順序によって意味が変わる。EPSで良い感じにするため工夫をしたい。ここでは既存の定義を崩さないように言語拡張を提案する。
+
+例で状況を整理する。`runtime`エフェクトのハンドラをこんな感じに実装できるとする。`c++XXX`は外部関数呼び出しの気持ち。
+
+```kokax
+handler {
+  io: {
+    >> = /\a.\x:a. c++>> x; resume(x);
+    << = /\a.\x:a. c++<<(x); resume();
+  }
+  err: {
+    panic = /\a.\x:string. c++printerr(x); exit(1);
+  }
+  log = \x:string. c++log(x); resume();
+}
+```
+
+これを受け入れる文法は大体こんな感じか。
+
+~ mathpre
+h ::= \{ l:h; ...; clause;... \}
+clause ::= op --> f
+~
+
+Dynamic semanticsを次のようにする。まずreduction ruleは変えない。
+
+~ mathpre
+handler h f --> prompt m h ( f () )
+~
+
+次のevvの拡張で$m$と$w$をシェアするのがミソ。
+
+~ infer
+<< l1: (m, h1, w),..., l_n: (m, h_n, w) | w >> |- E     h1, ..., h_n === decompose(h)
+-------------------------------------------
+w |- prompt m h E
+~
+
+~mathpre
+decompose( \{ h;...; clause;... \} ) = decompose(h), ..., \{ clause;... \}
+~
+
+マーカ$m$が「複数のハンドラで共有されている」ので順序の問題は起きないはず。
+
+型システムは先にも述べた通りそれぞれのラベルをflattenしたようなeffect rowを用いる。
+これは新しい動的意味論と対応する。
+つまりhandler規則をこんな感じに置き換える:
+
+~ infer
+G |-ops h : s | l,... | eff
+------------------------------------------------------[Handler*]
+G |- handler h : ( () --> <l,...| eff> s ) --> eff s
+~
+
+ops規則も同様に:
+
+~ infer
+G |- h : s | l | eff ...    G |-ops \{ clause;... \} : s | l' | eff
+-----------------------------------------------------------------------[OPS*]
+G |-ops \{ l:h;...; clause;... \} : s | l,..., l' | eff
+~
+
