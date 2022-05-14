@@ -15,5 +15,7 @@ Incremental computationはアイデアは似ているけど、計算の種類が
 - [Monads for incremental computing (ICFP2002)](https://dl.acm.org/doi/abs/10.1145/581478.581482)
 
 MultiCore OCamlでconcurrent programmingの話。incrementalとはあまり関係ない？
-[(github)](https://github.com/ocamllabs/ocaml-effects-tutorial)
+
+- [(github)](https://github.com/ocamllabs/ocaml-effects-tutorial)
+- [Concurrent System Programming with Effect Handlers](https://link.springer.com/chapter/10.1007/978-3-319-89719-6_6) (need VPN)
 
