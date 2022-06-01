@@ -38,5 +38,11 @@ Incremental for compiler.
     - rust-analyzerは（少なくとも）2020年当時はfine-grainなincremental computingをしていたみたい。コンパイル単位が大きいのでindexを取るのが難しいからだとか。コンパイラの実行パスや部分的な実行結果を保存して再利用性を判定しているのだとか。
         - 具体的にどのような条件を観察しているか気になる。proc-macroの非決定性によるバグがあった、とは言っていたが、コンパイラで副作用が起きるケースはなかなかなさそう。非決定性由来のバグもそんなものあるのか、と驚いた。キャッシュ可能性を判定するために副作用のなさを保証したくなって、そのためにエフェクトシステムは強いことをできそう。コンパイラ最適化としてどのくらい自動でincrementalなことをできるか？Haskellはすでにできそうで、昔軽く調べたことがあるのだけれど、それらしい情報にはたどり着けなかった。せいぜいモナドでメモ化をおしゃれに関数に追加するくらい。
     - C++はヘッダファイルが、Javaはファイル単位の意味が良い仕事をしていてIDE向けのindexingに優しいとか。
+- [Architecture of rust-analyzer](https://github.com/rust-lang/rust-analyzer/blob/master/docs/dev/architecture.md)
+    - 開発者向けドキュメント。上の記事を読んでからこの記事を読んでいるの。今の所この順番で読んで良かったと思っている。
+    - Kokaにもこんなドキュメントがあったら、と思わずにいられない。まあ、このドキュメントと実装が対応しているかはわからないが。
+- [Why the Sorbet typechecker is fast](https://blog.nelhage.com/post/why-sorbet-is-fast/)
+    - Ruby向けの型検査器の実装について。高速化のためのデザインを解説している。詳細ではなく方針。
+    - Rustの記事でおすすめされていた。<https://rust-analyzer.github.io/blog/2020/05/18/next-few-years.html>
 
 
