@@ -31,3 +31,12 @@ MultiCore OCamlでconcurrent programmingの話。incrementalとはあまり関�
 - [(github)](https://github.com/ocamllabs/ocaml-effects-tutorial)
 - [Concurrent System Programming with Effect Handlers](https://link.springer.com/chapter/10.1007/978-3-319-89719-6_6) (need VPN)
 
+Incremental for compiler.
+
+- [Three Architectures for a Responsive IDE](https://rust-analyzer.github.io/blog/2020/07/20/three-architectures-for-responsive-ide.html)
+    - IDE向けコンパイラのざっくりとした構成。特にコード補完のための依存性解析について。
+    - rust-analyzerは（少なくとも）2020年当時はfine-grainなincremental computingをしていたみたい。コンパイル単位が大きいのでindexを取るのが難しいからだとか。コンパイラの実行パスや部分的な実行結果を保存して再利用性を判定しているのだとか。
+        - 具体的にどのような条件を観察しているか気になる。proc-macroの非決定性によるバグがあった、とは言っていたが、コンパイラで副作用が起きるケースはなかなかなさそう。非決定性由来のバグもそんなものあるのか、と驚いた。キャッシュ可能性を判定するために副作用のなさを保証したくなって、そのためにエフェクトシステムは強いことをできそう。コンパイラ最適化としてどのくらい自動でincrementalなことをできるか？Haskellはすでにできそうで、昔軽く調べたことがあるのだけれど、それらしい情報にはたどり着けなかった。せいぜいモナドでメモ化をおしゃれに関数に追加するくらい。
+    - C++はヘッダファイルが、Javaはファイル単位の意味が良い仕事をしていてIDE向けのindexingに優しいとか。
+
+
