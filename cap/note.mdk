@@ -17,6 +17,29 @@ Capabilityの使い道を調べる。
 
 # 文献リスト
 
+上から新しく見たものをpushしていく。
+
+## Capability based designe (1973)
+
+[url](https://dl.acm.org/doi/10.1145/361011.361070)
+
+DroidCapでcapabilityに関する制約を課すために
+referene monitorを使う、みたいなことを主張していた。
+
+## Programming semantics for multiprogrammed computations (1966)
+
+[url](https://dl.acm.org/doi/10.1145/365230.365252)
+
+DroidCap でcapabilityといったときに引用されていた論文。
+
+## DroidCap (2019)
+
+[url](https://publications.cispa.saarland/2818/)
+
+Androidのパーミッションをより小粒に管理するための手法を提案する論文。
+既存のIPC (inter process comunication) フレームワークを利用して、
+capabilityベースなパーミッション管理をする。
+
 ## Gentrification gone too far? affordable 2nd-class values for fun and (co-)effect
 
 [url](https://dl.acm.org/doi/10.1145/3022671.2984009)
