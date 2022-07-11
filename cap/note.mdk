@@ -19,6 +19,12 @@ Capabilityの使い道を調べる。
 
 上から新しく見たものをpushしていく。
 
+## Context-aware programming languages
+
+[url (pdf)](http://tomasp.net/academic/theses/coeffects/thesis-final.pdf)
+
+- p.22 `password` 変数に `sensitive` をつけている。こういう属性は誰が発行して、誰が消費するのだろうか。
+
 ## Capability based designe (1973)
 
 [url](https://dl.acm.org/doi/10.1145/361011.361070)
@@ -31,6 +37,7 @@ referene monitorを使う、みたいなことを主張していた。
 [url](https://dl.acm.org/doi/10.1145/365230.365252)
 
 DroidCap でcapabilityといったときに引用されていた論文。
+割と低レベルな話が多い。僕が論文の背景を掴めていない。
 
 ## DroidCap (2019)
 
