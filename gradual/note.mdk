@@ -1,0 +1,48 @@
+Title      : 動的言語での安全性や言語処理
+updated: 2022-06-29T19:12:26
+
+[INCLUDE=preamble]
+
+[TITLE]
+
+<!-- [TOC] -->
+
+~ abstract
+型検査で結構なことができる。最適化や安全性の検査、生きたドキュメントが主な役割だろうか。
+これらを動的言語にも取り入れることはできるだろうか。できるとしたらどんな嬉しさがあるだろうか。
+~
+
+# 文献
+
+## Gradual Soundness: Lessons from Static Python
+
+### meta
+
+- [url](https://cs.brown.edu/~sk/Publications/Papers/Published/lgmvpk-static-python/paper.pdf)
+- programming2023
+- 2022. Jan submit
+
+### 要約
+
+Gradual typingでは複数の「健全性」を段階的に取り入れると良い感じ、というような論文?
+保証と制約を複数用意することで、漸進的にプログラマの努力を処理系が提供するメリットとして還元できる?
+Static Pythonという言語（処理系）が議論の対象。
+
+Gradual (Type System) on a language みたいな？
+
+- module単位で段階切り替え
+- 3段階くらいある
+- 安全性や最適化に影響。最適化はメソッドJITと相性が良いとか、AOTコンパイルするとか色々書いてあった。把握しきっていない。
+- 安全性の保証が具体的にどんな感じだったかを把握していない。いつ、何をどのように保証するのだろうか。
+  - 例えばコンパイル時に、変数のデータ型をアノテーションを用いて機械語レベルで決定するなど。
+  - Section4を読めば良い
+- 高階な関数/データの型検査はあまり真剣に取り組まない戦略。たかだかDictだし、key,valueを検査する/しないでそれぞれの型を用意している。
+- Materialization関係が静的検査でのDyn-typeを扱う。
+- 細々とした性質は書かれていなさそう。
+
+
+
+### 印象
+
+他の言語はどうなんだろうか。
+方針に筋の良さを感じる。

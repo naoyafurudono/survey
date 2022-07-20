@@ -1,0 +1,67 @@
+Title      : about capability
+
+[INCLUDE=preamble]
+
+[TITLE]
+
+<!-- [TOC] -->
+
+~ abstract
+Capabilityの使い道を調べる。
+とりあえず、ユーザがコードをかける環境で権限を管理する良い手法の開発を目的にする。
+対象言語の静的/動的は問わないが、動的で考え始めるのが良いだろう。
+動的に防ぐことを第一目標にして、静的な議論をする際には、
+防ぐ必要がないことを保証すれば良い。
+~
+
+# 文献リスト
+
+上から新しく見たものをpushしていく。
+
+## Context-aware programming languages
+
+[url (pdf)](http://tomasp.net/academic/theses/coeffects/thesis-final.pdf)
+
+- p.22 `password` 変数に `sensitive` をつけている。こういう属性は誰が発行して、誰が消費するのだろうか。
+
+## Capability based designe (1973)
+
+[url](https://dl.acm.org/doi/10.1145/361011.361070)
+
+DroidCapでcapabilityに関する制約を課すために
+referene monitorを使う、みたいなことを主張していた。
+
+## Programming semantics for multiprogrammed computations (1966)
+
+[url](https://dl.acm.org/doi/10.1145/365230.365252)
+
+DroidCap でcapabilityといったときに引用されていた論文。
+割と低レベルな話が多い。僕が論文の背景を掴めていない。
+
+## DroidCap (2019)
+
+[url](https://publications.cispa.saarland/2818/)
+
+Androidのパーミッションをより小粒に管理するための手法を提案する論文。
+既存のIPC (inter process comunication) フレームワークを利用して、
+capabilityベースなパーミッション管理をする。
+
+## Gentrification gone too far? affordable 2nd-class values for fun and (co-)effect
+
+[url](https://dl.acm.org/doi/10.1145/3022671.2984009)
+制約を入れるメリットと手法を紹介し、それを使ってできることを列挙する。Scalaで実装する。Scalaであることはそれなりに必要。特に implicit parameter に依存する（頑張ってパラメータ渡せば良いのだが）。それ以外にはサブタイピングや型、クラスや抽象型も使う。
+
+- 関数を2nd-classにすること: クロージャによるエスケープを防ぐ
+  - オプショナルで2nd-classにできて、2nd-classを引数として要求する関数をかける。
+- capability: エスケープされて欲しくないとか、ライフタイムを制限したい対象。
+- co-effect はcapability+implicit parameterで実現している気持ち。
+- データ構造の定義を形式的に行っていない点が残念だし、弱い点だと思う。
+  - lambdaはデータ構造定義の一例だと思えるが、本体があるせいで特殊。共通部分の性質を際立たせるために両方考えて欲しかった。
+  - [?] データ構造のライフタイムを考えると、どのように変わるか。クラスの扱いで十分なのか。
+    - この辺りはrustに軍配が上がりそう。
+- Figure2の評価規則(EApp1)が厳しすぎないだろうか。Calleeのパラメータがfirst-classだと、実引数の式はfirst-class用の評価規則で評価される（評価中に2nd-classな変数にアクセスできない）。first/secondの制約は値に対して行うもので、実行については何も考慮しないのが望ましいように思える。
+- Section3が不満
+  - $S1..Sk$ や　$~$、$eval$ がしっかり定義されていない。(EApp)のスタックは直感にも反する定義をしている。僕はまだ理解しれていない。
+  - 型システムは厳しすぎて動く言語として真っ当に機能しなさそう。
+- [?] path-dependent type
+- プログラム生成の話は興味ある。どれくらい衛生的にできるか、どんな衛生の観点が存在するか、セキュリティや最適化、プログラムとしてのwell-formednessなど

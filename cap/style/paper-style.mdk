@@ -1,0 +1,130 @@
+Colorizer       : kokax
+Colorizer       : haskellx
+
+Package*        : tikz-cd
+Package         : fleqn
+
+.Floating,.Figure {
+  .align-center=clear;
+  text-align:left;
+}
+
+.SubCase {
+  padding-left: 1em;
+}
+
+.code1 {
+  language: kokax;
+}
+
+infer {
+  margin-top: 1em;
+}
+
+.boxed {
+  .mathpre;
+  padding: 0.5ex;
+  border: 1px solid black;
+}
+
+pre {
+  padding-left: 1em;
+}
+
+@html mathpre {
+  padding-left: 1em;
+}
+
+.internal {
+  background-color:#DDD;
+  padding:0.2ex 0ex;
+}
+
+.typerule {
+  .boxed
+}
+
+.todo-style {
+  border-left: 3pt solid #EEE;
+  padding-left: 1em;
+  padding-right: 0.25em;
+  font-size: 90%;
+  background-color:#ddd;
+}
+
+
+todo { .todo-style }
+
+@html Figure {
+  border: 1px solid #ddd;
+  background-color: floralwhite;
+}
+
+@html Proof {
+  background: #eee;
+  padding-left: 0.5ex;
+}
+
+FigBlock {
+  display: block;
+  before: "**&caption;:**&medskip;&nl;{text-indent:-1ex}&nl;";
+  text-align:left;
+  margin-bottom: 0.5ex;
+  line-adjust:-3;
+  padding-left:1ex;
+}
+
+Case {
+  display: block
+  tight;
+  before: "**case** ";
+  text-indent: 0pt;
+  margin: 1pt;
+  padding: 0pt;
+}
+
+SubCase {
+  display: block
+  tight;
+  before: "**subcase** ";
+  text-indent: 0pt;
+  margin: 0pt;
+  padding: 0pt;
+}
+
+Css Header:
+    span.math-rendering {
+      display:inline-block;
+      width:8em;
+      overflow-x:auto;
+      font-size:70%;
+    }
+    span.math-rendering::-webkit-scrollbar {
+      width:4px;
+    }
+
+.toc { .sans-serif }
+
+@if not(@Extended) {
+  Extended {
+    display:none;
+  }
+}
+
+@html .token.type.keyword {
+  color: blue;
+}
+
+@tex pre,code1 {
+  font-size:small;
+}
+
+Tex Doc Header*:
+    \setlength\mdpreskip{\abovedisplayskip}
+    %\setlength\textfloatsep{0.75\textfloatsep}
+    \abovedisplayskip=0pt
+    \belowdisplayskip=\abovedisplayskip
+    \abovedisplayshortskip=0pt
+    \belowdisplayshortskip=\abovedisplayshortskip
+    \parskip=0pt
+    \setlength\mathindent{1em}

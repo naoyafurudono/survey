@@ -1,0 +1,276 @@
+.sf { 
+  .sans-serif 
+}
+
+iddash         : -
+@tex iddash    : []{tex-cmd:"\dash"}
+
+.codesub {
+  font-style:normal;
+  tex-cmd:"\mbox";
+}
+
+total     : &lang;&rang;
+@tex total: &lang; &rang;
+
+.code1,.pre-indented,.pre-fenced3 {
+  language: kokax;
+}
+
+.code1 {
+  replace:"/^:/\(:|\)/";
+}
+
+.code1,.pre-indented,.pre-fenced3,.koka {
+  language: kokax;   
+  replace:"/([a-zA-Z])([12])\b/\1\(x|~\2~\)/g";
+  replace: "//=>/\(=>|[&rArr;]{.serif}\)\
+            //->/\(->|[&rarr;]{.serif}\)\
+            //~>/\(xx|$\rightsquigarrow$\)\
+            //>=/\(>=|&ge;\)\
+            //<=/\(<=|&le;\)\
+            //<>/\(<>|&total;\)\
+            //<(?!-)/\(<|&lang;\)\
+            //^>/\($\mathbf{\gt}$\)\
+            //>>=/>>=\
+            //>(?!=)/\(>|&rang;\)\
+            //_s\b/\(x|~[s]{.codesub}~\)\
+            //\btau\b/\(t|[&tau;]{.serif}\)\
+            //([a-zA-Z_-]+)(\d+)\b/\1\(x|~[\2]{.codesub}~\)\
+            //gm";
+}
+
+
+@if tex {
+  pre { tex-cmd-outer:"{\def~{\nobreakspace{}}"; }
+  .pre-fenced4 { font-size:small }
+  pre,.code2 { font-size:small }
+  .xpre-indented,.xpre-fenced { 
+    margin-top:0.25ex; 
+    margin-bottom:0.25ex; 
+  }
+}
+
+.math-inline {
+  input: mathpre;
+}
+
+
+.ptoken.keyword { color:navy; }
+.ptoken.type    { color:#066; }
+.ptoken.predefined { color:navy; }
+
+.math-inline, mathpre, snippet {
+  replace:"//\(\(([^|]*)\|((?:[^\)]|\)(?!\)))*)\)\)/\tup{\1}{\2}\
+           //g";
+  replace:"//~([^~\n\s]+)~>/\leadsto_{\1}\
+           //xhandler_h/handler\{h\}\
+           //xhandle_h/handle\{h\}\
+           //\bhandled\b/\mathcal{#H}\
+           //^\[(\w+)\]$/\brulename{{#\1}}\
+           //^\[(\w+)\-(\w+)\]$/\brulename{{#\1-#\2}}\
+           //@evv/\kwevv{}\
+           //g";
+  replace:"//perform\{(.+)\}/@perform^{\1}\
+           //handler\{(.+)\}/@handler^{\1}\
+           //g";
+  replace:"//\|\-F\b/\!\vdash_{\textsf{F}}\
+           //\|\-([a-zA-Z]+)/\!\vdash_{\!\textsf{\1}}\
+           //\|\|\-([a-zA-Z]+)/\!\Vdash_{\!\textsf{\1}}\
+           //\bxevv(?![a-zA-Z\-])/{\scriptstyle\Delta}\
+           //\bevv(?![a-zA-Z\-])/w\
+           //\bt([0-9])/\tau_{\1}\
+           //\bG([0-9])/\Gamma_{\1}\
+           //\be([0-9])/\mathid{e}_{\1}\
+           //\beff([0-9])/\epsilon_{\1}\
+           //\bmu([0-9])/\mu_{\1}\
+           //\brq([0-9])/\varphi_{\1}\
+           //m([A-Z])/\mathcal{\1}\
+           //\brq/\varphi\
+           //\.\.\./{\dots}\
+           // \. /\bullet{}\
+           // oo /\bigcdot{}\
+           // o /\circ{}\
+           // =<< /\mathbin{\lhd}\
+           // >>= /\mathbin{\rhd}\
+           //\[\[/{\llbracket}\
+           //\]\]/{\rrbracket}\
+           //\[\+/{\lceil}\
+           //\+\]/{\rceil}\
+           //\[\-/{\lfloor}\
+           //\-\]/{\rfloor}\
+           //!-->>/{\longmapsto^*}\
+           //-->>/{\longrightarrow^*}\
+           //<<--/{^*\!{\longleftarrow}}\
+           //!-->/{\longmapsto}\
+           //-->/{\longrightarrow}\
+           //<--/{\longleftarrow}\
+           //!->/{\mapsto}\
+           //\[->\]/[->]\
+           //->/{\rightarrow}\
+           //<-/{\leftarrow}\
+           //~>/{\;\rightsquigarrow}\;\
+           //===/{\equiv}\
+           //!==/{\not\equiv}\
+           //~==/{\,\cong\,}\
+           //!~==/{\,\not\cong\,}\
+           //!~=/{\,\not\equiv\,}\
+           //<=/{\,\leq\,}\
+           //\.=/\doteq{}\
+           //!=/{\not=}\
+           //\[=/{\sqsubseteq}\
+           //=lpw/{\equiv_{\lpw}}\
+           //=b(?![a-zA-Z])/=_{\beta}\
+           //\bY_/\mathsf{Y}\!_\
+           //\bxY_/\wreduce{\mathsf{Y}\!}_\
+           //\bx([hYFSEH])(?![a-zA-Z])/\wreduce{\mathsf{\1}}_t\
+           //\bxexpr(?![a-zA-Z])(_?['\d]?)/\wreduce{e\1}\
+           //\bx-->/{\longrightarrow_t}\
+           //@as(?![a-zA-Z])/\mathsf{as}\
+           //\bas(?![a-zA-Z])/\overline{\alpha}\
+           //\braw\(([a-zA-Z]+)\)/\1\
+           //\ba(?![a-zA-Z])/\alpha{}\
+           //\bb(?![a-zA-Z])/\beta{}\
+           //\bt(?![a-zA-Z])/{\tau}\
+           //\bts(?![a-zA-Z])/\overline{\tau}\
+           //\bss(?![a-zA-Z])/{\overline\sigma}\
+           //\bs's(?![a-zA-Z])/{\overline{\sigma'}}\
+           //\bec(?![a-zA-Z])/{c_l}\
+           //\bans(?![a-zA-Z])/r\
+           //\bll([0-9])/@hnd^l_{\1}\
+           //\bll(?![a-zA-Z])/@hnd^l\
+           //\bgg(?![a-zA-Z])/\gamma{}\
+           //\bG(?![a-zA-Z])/\Gamma{}\
+           //\bGG\b/{G}\
+           //\bS\b/\Sigma{}\
+           //\bel(?![a-zA-Z])/{\iota}\
+           //\brl(?![a-zA-Z])/\mathrm{l}\
+           //\b[TF](?![a-zA-Z])/\mathrm{\0}\
+           //\b([EFHYRXPQ])([0-9])/\mathsf{\1}_{\2}\
+           //\b[EFHYRXPQ](?![a-zA-Z])/\mathsf{\0}\
+           //_([EFHYRXPQ])(?![a-zA-Z])/_\mathsf{\1}\
+           //\bD\b/\Delta\
+           //\bpe(?![a-zA-Z])/{\pi}\
+           //\beff(?![a-zA-Z])/{\epsilon}\
+           //\bnu(?![a-zA-Z])/\upsilon{}\
+           //\bmu(?![a-zA-Z])/\mu{}\
+           //\bpi(?![a-zA-Z])/\pi{}\
+           //\bexpr(?![a-zA-Z])/e\
+           //\bevnone/\bot{}\
+           //\bls\b/\overline{l}\
+           //\bargs(?![a-zA-Z])/\overline{x}\
+           //\bkl(?![a-zA-Z])/\mathsf{lab}\
+           //\bke(?![a-zA-Z])/\mathsf{eff}\
+           //\bk([lkeuh])(?![a-zA-Z])/\mathsf{\1}\
+           //\|\-/\vdash{}\
+           //\|==/\vDash{}_{\!\!\bot}\
+           //\|=/\vDash{}\
+           //\|\|-/\Vdash{}\
+           //\|/\midbar{}\
+           // \| /\midbar{}\
+           //:=/{:\!=}\
+           //::/::\
+           //:/\xcolon{}\
+           //\b00\b/\varnothing{}\
+           //\b01\b/\bullet{}\
+           //>>=/>>=\
+           //<</\llangle{}\
+           //>>/\rrangle{}\
+           //>\s>/\rangle\rangle\
+           //<>/\total{}\
+           //<(?!-)/\langle{}\
+           //>/\,\rangle{}\
+           //=>/\!\!\Rightarrow{}\!\
+           //~~>/\rightsquigarrow{}\
+           //\br([kfxye])(?![a-zA-Z])/\mathsf{\1}\
+           //\+\+/\appendop{}\
+           //\bvv\b/\downarrow{}\
+          //g";
+}
+
+.math-inline,pre {
+  replace:"/\b(?!tex)([a-zA-Z])-(?!handle)([a-zA-Z])/\1\(-|&iddash;\)\2/g"
+}
+
+Css Header:
+    p{ line-height: 1.25 }
+    
+Css Header Indented:    
+    p{ margin: 0pt; }
+    p.indent { text-indent: 1.5em; }
+
+Tex Header:
+    \newlength\mdxwidth
+    \newcommand\ifnowidth[3]{% 
+       \settowidth{\mdxwidth}{#1}%
+       \ifdim\mdxwidth>0pt\relax#3\else#2\fi
+    }
+    \newcommand{\rulename}[1]{\ensuremath{#1}}
+    \newcommand{\brulename}[1]{\ifnowidth{\ensuremath{#1}}{}{\;\scriptsize{[\textsc{#1}]}}}    
+    \newcommand{\infer}[3]{\dfrac{\begin{array}{llll}#1\end{array}}{\begin{array}{llll}#2\end{array}}{\;#3}}
+    \newcommand{\lam}[3]{\lambda^{#1} #2.\,#3}
+    \newcommand{\Lam}[2]{\Lambda #1.\,#2}
+    \newcommand{\comp}[1]{\overline{#1}}
+    \newcommand{\bind}[4]{\mathsf{bind}_{#1}(#2,#3,#4)}
+    \newcommand{\apply}[2]{\mathsf{apply}_{#1}(#2)}
+    \newcommand{\rlam}[1]{\lambda\kern -0.95ex\lambda_{#1}}
+    \newcommand\llangle{\langle\kern -0.45ex\langle\kern 0.15ex}
+    \newcommand\rrangle{\kern 0.15ex\rangle\kern -0.55ex\rangle}
+    \newcommand\dash{\hspace{-0.45ex}\mbox{-}\hspace{-0.5ex}}
+    \newcommand\xlongmapsto{\longmapsto^*}%\hspace{-2.8ex}\rightarrow\;}
+    \renewcommand\mathspace{\mskip 3mu plus 0.5mu minus 0.5mu\smallstrut}
+    \newcommand\disjoint{\not\strut\hspace{-1.1ex}\cap\;}% 
+    \newcommand\cnot[1]{\mathrel{\ooalign{\hfil$#1$\hfil\cr\hfil$/$\hfil\cr}}}
+    \newcommand\itcorrect[1]{#1\hspace{0.15ex}}
+    %\appto\langle{\mkern-2mu}
+    %\preto\rangle{\mkern-1mu}
+    \newcommand\total{\langle\mkern 3mu\rangle}
+    \newcommand\bigline{\rule[-1.4ex]{0pt}{4ex}}
+    \newcommand\reduce[1]{\overline{#1}}
+    \newcommand\wreduce[1]{\reduce{#1}}
+    \renewcommand\notin{\!\not\strut\!\!\!\in}
+    \newcommand\llambda{\lambda\hspace{-1ex}\lambda}
+    \newcommand\calls[1]{|#1|}
+    \DeclareSymbolFont{modernmath}{OML}{ptm}{m}{n}
+    \DeclareMathSymbol{\mlambda}{\mathord}{modernmath}{"15}
+    \newcommand{\evec}[1]{\llangle #1\rrangle}
+    \newcommand{\kwevv}{\mathkw{evv}}
+    \newcommand{\tup}[2]{\llparenthesis#1,#2\rrparenthesis}
+    \newcommand{\vvdash}[1]{\!\Vdash_{\!\textsf{#1}}}
+    \newcommand{\ins}[3]{\evec{#1\xcolon #2 \midbar #3}}
+    \newcommand{\midbar}{\mid}
+    \newcommand{\mbag}[1]{\{\!\!\{ {#1} \}\!\!\}}
+    \DeclareMathSymbol{:}{\mathord}{operators}{"3A}
+    \newcommand{\xcolon}{\,:\,}
+    \makeatletter
+    \newcommand*\bigcdot{\mathpalette\bigcdot@{.85}}
+    \newcommand*\bigcdot@[2]{\mathbin{\vcenter{\hbox{\scalebox{#2}{$\m@th#1\bullet$}}}}}    
+    \makeatother
+
+Tex Header*:    
+    %\renewcommand\mathit[1]{\textit{\fontfamily{lmr}\selectfont #1}}
+    \newlength\mdpreopwidth
+    \renewcommand{\ppreop}[1]{%
+      \settowidth{\mdpreopwidth}{#1}%
+      \ifdim\mdpreopwidth=0pt\relax\else\,{#1}\,\fi
+    }
+    \setlength\mdcompactskip{0.5ex}
+    \renewcommand\prebr{\vspace{-0.3ex}\strut\newline\strut\ignorespaces}
+    
+    
+
+
+infer { 
+  .align-center;
+  display:block;
+  margin-bottom:1ex;
+  replace:"/\/\/ *(.*)/&\\;\\text{(\1)}/g";
+  replace:"/([\s\S]*?)\n *----+ *(?:\(([^\)]*)\)) *\n([\s\S]*)/\\infer{\1}{\3}{(\2)}/m";
+  replace:"/([\s\S]*?)\n *----+ *(?:\[([^\]]*)\])? *\n([\s\S]*)/\\infer{\1}{\3}{\brulename{\textsc{\2}}}/m";
+  replace:"$&nl;&source;&nl;${.infereq; display:inline-block;}";
+}
+
+
+@tex .ptoken.identifier { tex-cmd-inner:"\itcorrect"; } 
+.ptoken.string, .ptoken.constructor  { color:#505; }
+.ptoken.comment { color:#050; }
